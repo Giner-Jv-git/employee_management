@@ -1,0 +1,19 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <link href="{% static 'emp_app/css/styles.css' %}" rel="stylesheet">
+</head>
+<body class="flex">
+    {% include 'emp_app/includes/sidebar.html' %}
+    
+    <main class="flex-1 ml-64 p-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

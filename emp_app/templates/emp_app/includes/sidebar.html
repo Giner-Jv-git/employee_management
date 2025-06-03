@@ -1,0 +1,19 @@
+<div class="w-64 bg-gray-800 text-white h-screen fixed">
+  <div class="p-4">
+    <h2 class="text-xl font-bold">Employee Management</h2>
+  </div>
+  <nav class="mt-6">
+    <div class="px-4 py-2 hover:bg-gray-700">
+      <a href="{% url 'admin_dashboard' %}" class="block">Dashboard</a>
+    </div>
+    <div class="px-4 py-2 hover:bg-gray-700">
+      <a href="{% url 'add_employee' %}" class="block">Add Employee</a>
+    </div>
+    <div class="px-4 py-2 hover:bg-gray-700">
+      <a href="{% url 'view_table' %}" class="block">View Table</a>
+    </div>
+    <div class="px-4 py-2 hover:bg-gray-700">
+      <a href="{% url 'settings' %}" class="block">Settings</a>
+    </div>
+  </nav>
+</div>
