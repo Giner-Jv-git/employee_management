@@ -1,6 +1,43 @@
 from django.views.generic import ListView
 from django.db.models import Q
 from .models import EmployeeData
+from django.shortcuts import render
+
+from django.views.generic import TemplateView
+from .models import EmployeeData
+from django.utils import timezone
+from datetime import timedelta
+
+
+
+def login_view(request):
+    return render(request, 'emp_app/login.html')
+
+
+#dashboard functions
+class AdminDashboardView(TemplateView):
+    template_name = 'emp_app/admin/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Total employees count
+        context['total_employees'] = EmployeeData.objects.count()
+        
+        # Active employees count
+        context['active_employees'] = EmployeeData.objects.filter(status='active').count()
+        
+        # Recent updates (last 30 days)
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        context['recent_updates'] = EmployeeData.objects.filter(
+            updated_at__gte=thirty_days_ago
+        ).count()
+        
+        # Recently modified employees (last 5 changes)
+        context['recent_employees'] = EmployeeData.objects.all().order_by('-updated_at')[:5]
+        
+        return context
+
 
 class EmployeeTableView(ListView):
     model = EmployeeData
@@ -31,5 +68,7 @@ class EmployeeTableView(ListView):
         context['search_query'] = self.request.GET.get('search', '')
         context['status_filter'] = self.request.GET.get('status', '')
         return context
+
+
 
 
