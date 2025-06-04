@@ -8,6 +8,11 @@ from .models import EmployeeData
 from django.utils import timezone
 from datetime import timedelta
 
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .forms import EmployeeForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 def login_view(request):
@@ -38,6 +43,20 @@ class AdminDashboardView(TemplateView):
         
         return context
 
+
+#add employee
+class AddEmployeeView(LoginRequiredMixin, CreateView):
+    model = EmployeeData
+    form_class = EmployeeForm
+    template_name = 'emp_app/admin/add_employee.html'
+    success_url = reverse_lazy('view_table')
+    
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+#employee view 
 
 class EmployeeTableView(ListView):
     model = EmployeeData
