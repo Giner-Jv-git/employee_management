@@ -1,14 +1,12 @@
-from django.views.generic import ListView
+from django.views.generic import ListView,TemplateView,CreateView,UpdateView,DeleteView
 from django.db.models import Q
 from .models import EmployeeData
 from django.shortcuts import render
 
-from django.views.generic import TemplateView
-from .models import EmployeeData
 from django.utils import timezone
 from datetime import timedelta
 
-from django.views.generic import CreateView
+
 from django.urls import reverse_lazy
 from .forms import EmployeeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -88,6 +86,27 @@ class EmployeeTableView(ListView):
         context['status_filter'] = self.request.GET.get('status', '')
         return context
 
+#edit employee
+class EditEmployeeView(LoginRequiredMixin, UpdateView):
+    model = EmployeeData
+    form_class = EmployeeForm
+    template_name = 'emp_app/admin/edit_employee.html'
+    success_url = reverse_lazy('view_table')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employee'] = self.get_object()  # Pass employee object to template
+        return context
+
+#delete Emp
+class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
+    model = EmployeeData
+    success_url = reverse_lazy('view_table')
+    template_name = 'emp_app/admin/confirm_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employee'] = self.get_object()
+        return context
 
 

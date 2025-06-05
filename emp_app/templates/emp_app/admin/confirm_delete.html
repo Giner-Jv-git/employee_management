@@ -1,0 +1,42 @@
+{% extends 'emp_app/base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Header -->
+        <div class="bg-red-100 px-6 py-4 border-b border-red-200">
+            <h2 class="text-lg font-medium text-red-800">Delete Employee</h2>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <div class="flex-shrink-0">
+                    <svg class="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-gray-800">Are you sure you want to permanently delete</p>
+                    <p class="font-medium text-gray-900">"{{ employee.name }}"?</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
+            <a href="{% url 'view_table' %}" 
+               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors">
+                Cancel
+            </a>
+            <form method="post" action="{% url 'delete_employee' employee.pk %}">
+                {% csrf_token %}
+                <button type="submit" 
+                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
