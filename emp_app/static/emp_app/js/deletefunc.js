@@ -3,3 +3,12 @@ function confirmDelete(pk, name) {
         window.location.href = `/employees/delete/${pk}/`;
     }
 }
+
+// Check for deleted employee name in sessionStorage when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const deletedEmployeeName = sessionStorage.getItem('deletedEmployeeName');
+    if (deletedEmployeeName) {
+        // Clear the stored name
+        sessionStorage.removeItem('deletedEmployeeName');
+    }
+});

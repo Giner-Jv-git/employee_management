@@ -2,6 +2,7 @@ from django.views.generic import ListView,TemplateView,CreateView,UpdateView,Del
 from django.db.models import Q
 from .models import EmployeeData
 from django.shortcuts import render
+from django.contrib import messages
 
 from django.utils import timezone
 from datetime import timedelta
@@ -51,7 +52,9 @@ class AddEmployeeView(LoginRequiredMixin, CreateView):
     
     def form_valid(self, form):
         form.instance.created_by = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, 'Employee added successfully!')
+        return response
 
 
 #employee view 
@@ -98,6 +101,11 @@ class EditEmployeeView(LoginRequiredMixin, UpdateView):
         context['employee'] = self.get_object()  # Pass employee object to template
         return context
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Employee updated successfully!')
+        return response
+
 #delete Emp
 class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
     model = EmployeeData
@@ -108,5 +116,9 @@ class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context['employee'] = self.get_object()
         return context
-
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Employee deleted successfully!')
+        return response
 
