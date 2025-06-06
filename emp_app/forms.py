@@ -1,4 +1,3 @@
-
 from django import forms
 from .models import EmployeeData
 
@@ -16,4 +15,8 @@ class EmployeeForm(forms.ModelForm):
             'age': forms.NumberInput(attrs={'min': 18}),
             'salary': forms.NumberInput(attrs={'step': '0.01'}),
             'address': forms.Textarea(attrs={'rows': 3}),
+            'profile_picture': forms.FileInput(attrs={
+                'accept': 'image/*',
+                'class': 'hidden'
+            })
         }

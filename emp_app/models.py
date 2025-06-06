@@ -33,7 +33,7 @@ class EmployeeData(models.Model):
     
     employee_id = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
-    profile_picture = models.ImageField(upload_to='employee_profiles/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='employee_profiles/', blank=True, null=True, help_text='Upload a profile picture (recommended size: 300x300px)')
     age = models.PositiveIntegerField()
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     address = models.TextField()
