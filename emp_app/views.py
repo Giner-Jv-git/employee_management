@@ -1,4 +1,4 @@
-from django.views.generic import ListView,TemplateView,CreateView,UpdateView,DeleteView
+from django.views.generic import ListView,TemplateView,CreateView,UpdateView,DeleteView,DetailView
 from django.db.models import Q
 from .models import EmployeeData
 from django.shortcuts import render
@@ -121,4 +121,15 @@ class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
         response = super().form_valid(form)
         messages.success(self.request, 'Employee deleted successfully!')
         return response
+
+#employee detail view
+class EmployeeDetailView(LoginRequiredMixin, DetailView):
+    model = EmployeeData
+    template_name = 'emp_app/admin/employee_detail.html'
+    context_object_name = 'employee'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employee'] = self.get_object()
+        return context
 
