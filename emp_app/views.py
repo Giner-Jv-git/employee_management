@@ -17,6 +17,7 @@ from django.utils.decorators import method_decorator
 
 
 
+#auth
 
 def login_view(request):
     if request.method == 'POST':
@@ -36,8 +37,13 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
     return render(request, 'emp_app/login.html')
 
+def logout_confirm(request):
+    return render(request, 'emp_app/logout_confirm.html')
+
+
 #dashboard functions
-class AdminDashboardView(TemplateView):
+
+class AdminDashboardView(LoginRequiredMixin,TemplateView):
     template_name = 'emp_app/admin/dashboard.html'
 
     def get_context_data(self, **kwargs):
@@ -62,6 +68,7 @@ class AdminDashboardView(TemplateView):
 
 
 #add employee
+
 class AddEmployeeView(LoginRequiredMixin, CreateView):
     model = EmployeeData
     form_class = EmployeeForm
@@ -77,7 +84,7 @@ class AddEmployeeView(LoginRequiredMixin, CreateView):
 
 #employee view 
 
-class EmployeeTableView(ListView):
+class EmployeeTableView(LoginRequiredMixin,ListView):
     model = EmployeeData
     template_name = 'emp_app/admin/view_table.html'
     context_object_name = 'employees'
@@ -108,6 +115,7 @@ class EmployeeTableView(ListView):
         return context
 
 #edit employee
+
 class EditEmployeeView(LoginRequiredMixin, UpdateView):
     model = EmployeeData
     form_class = EmployeeForm
@@ -125,6 +133,7 @@ class EditEmployeeView(LoginRequiredMixin, UpdateView):
         return response
 
 #delete Emp
+
 class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
     model = EmployeeData
     success_url = reverse_lazy('view_table')
@@ -141,6 +150,7 @@ class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
         return response
 
 #employee detail view
+
 class EmployeeDetailView(LoginRequiredMixin, DetailView):
     model = EmployeeData
     template_name = 'emp_app/admin/employee_detail.html'
@@ -157,9 +167,9 @@ def is_hr(user):
     return hasattr(user, 'employeeprofile') and user.employeeprofile.role == 'hr'
 
 @method_decorator([login_required, user_passes_test(is_hr)], name='dispatch')
-class HRDashboardView(ListView):
+class HRDashboardView(LoginRequiredMixin,ListView):
     model = EmployeeData
-    template_name = 'emp_app/hr/dashboard.html'
+    template_name = 'emp_app/hr/hr_dashboard.html'
     context_object_name = 'employees'
     paginate_by = 10
 

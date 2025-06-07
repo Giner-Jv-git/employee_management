@@ -7,6 +7,8 @@ from .views import AddEmployeeView,EditEmployeeView,DeleteEmployeeView,EmployeeD
 urlpatterns = [
     #auth
     path('login/', views.login_view, name='login'),
+    path('logout/', LogoutView.as_view(next_page='login'), name='logout_confirm'),
+    
     #admin
     path('dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
     path('add-employee/', AddEmployeeView.as_view(), name='add_employee'),
@@ -16,5 +18,5 @@ urlpatterns = [
     path('employees/<int:pk>/', EmployeeDetailView.as_view(), name='employee_detail'),
 
     #hr
-    path('hr/dashboard/', HRDashboardView.as_view(), name='hr_dashboard'),
+    path('hr/hr_dashboard/', HRDashboardView.as_view(), name='hr_dashboard'),
 ]
