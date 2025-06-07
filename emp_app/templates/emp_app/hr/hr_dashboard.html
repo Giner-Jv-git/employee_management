@@ -1,9 +1,9 @@
-<!-- emp_app/templates/emp_app/admin/dashboard.html -->
-{% extends 'emp_app/base.html' %}
+
+{% extends 'emp_app/hr_base.html' %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-2">Welcome to Hr Dashboard</h1>
+    <h1 class="text-2xl font-bold mb-2">Welcome to HR Dashboard</h1>
     <p class="text-gray-600 mb-6">Here's what's happening with your employees today.</p>
 
     <!-- Stats Cards -->
@@ -60,7 +60,7 @@
     <div class="bg-white p-6 rounded-lg shadow mb-8">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Recently Modified Employees</h2>
-            <a href="{% url 'view_table' %}" class="text-blue-600 text-sm font-medium">View All →</a>
+            <a href="{% url 'hr_view_table' %}" class="text-blue-600 text-sm font-medium">View All →</a>
         </div>
         <p class="text-gray-500 text-sm mb-4">Latest updates and changes</p>
         

@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.views import LogoutView
-from .views import AddEmployeeView,EditEmployeeView,DeleteEmployeeView,EmployeeDetailView,HRDashboardView
+from .views import AddEmployeeView,EditEmployeeView,DeleteEmployeeView,EmployeeDetailView,HRDashboardView,HREmployeeTableView
 
 
 urlpatterns = [
@@ -19,4 +19,6 @@ urlpatterns = [
 
     #hr
     path('hr/hr_dashboard/', HRDashboardView.as_view(), name='hr_dashboard'),
+    path('hr/employees/', HREmployeeTableView.as_view(), name='hr_view_table'),
+    path('hr/employees/<int:pk>/', EmployeeDetailView.as_view(), name='hr_employee_detail'),
 ]
