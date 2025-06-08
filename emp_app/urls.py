@@ -7,7 +7,8 @@ from .views import AddEmployeeView,EditEmployeeView,DeleteEmployeeView,EmployeeD
 urlpatterns = [
     #auth
     path('login/', views.login_view, name='login'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout_confirm'),
+    path('logout/confirm/', views.logout_confirm_view, name='logout_confirm'), 
+    path('logout/', views.logout_view, name='logout'), # confirmation page
     
     #admin
     path('dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),

@@ -6,7 +6,7 @@ from django.contrib import messages
 
 from django.utils import timezone
 from datetime import timedelta
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.urls import reverse_lazy
 from .forms import EmployeeForm
@@ -20,6 +20,15 @@ from django.utils.decorators import method_decorator
 #auth
 
 def login_view(request):
+    if request.user.is_authenticated:
+        # Redirect based on role
+        if hasattr(request.user, 'employeeprofile'):
+            if request.user.employeeprofile.role == 'admin':
+                return redirect('admin_dashboard')
+            elif request.user.employeeprofile.role == 'hr':
+                return redirect('hr_dashboard')
+        return redirect('admin_dashboard')  # fallback
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -37,8 +46,16 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
     return render(request, 'emp_app/login.html')
 
-def logout_confirm(request):
+def logout_confirm_view(request):
     return render(request, 'emp_app/logout_confirm.html')
+
+def logout_view(request):
+
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')
+    return redirect('logout_confirm')
+
 
 #admin
 #dashboard functions
