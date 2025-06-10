@@ -31,6 +31,17 @@ class EmployeeData(models.Model):
         message="Phone number must be 11 digits starting with 09 (e.g. 09123456789)"
     )
     
+    POSITION_CHOICES = [
+        ('front_desk', 'Front Desk / Receptionist'),
+        ('housekeeping', 'Housekeeping Staff'),
+        ('chef', 'Chef / Kitchen Staff'),
+        ('waitstaff', 'Waitstaff / Servers'),
+        ('maintenance', 'Maintenance / Engineering Staff'),
+        ('lifeguard', 'Lifeguard'),
+        ('security', 'Security Personnel'),
+        ('event_coordinator', 'Event Coordinator / Banquet Staff'),
+    ]
+    
     employee_id = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
     profile_picture = models.ImageField(upload_to='employee_profiles/', blank=True, null=True, help_text='Upload a profile picture (recommended size: 300x300px)')
@@ -43,6 +54,11 @@ class EmployeeData(models.Model):
         blank=True
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
+    position = models.CharField(
+        max_length=30,
+        choices=POSITION_CHOICES,
+        default='front_desk'  
+    )
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

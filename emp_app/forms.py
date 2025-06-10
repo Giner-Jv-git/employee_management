@@ -5,7 +5,7 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = EmployeeData
         fields = ['name', 'profile_picture', 'employee_id', 'phone_number', 
-                 'age', 'salary', 'address', 'status']
+                 'age', 'salary', 'address', 'status', 'position']
         widgets = {
             'phone_number': forms.TextInput(attrs={
                 'placeholder': '09XXXXXXXXX',

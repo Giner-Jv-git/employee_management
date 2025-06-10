@@ -64,6 +64,10 @@
                                 <p class="text-sm text-gray-500">Salary</p>
                                 <p class="text-gray-900 font-medium">₱{{ employee.salary }}</p>
                             </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Position</p>
+                                <p class="text-gray-900 font-medium">{{ employee.get_position_display }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,4 +106,4 @@
 </div>
 
 
-{% endblock %} 
+{% endblock %}

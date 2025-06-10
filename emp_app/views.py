@@ -168,9 +168,19 @@ class DeleteEmployeeView(LoginRequiredMixin, DeleteView):
 
 #employee detail view
 
-class EmployeeDetailView(LoginRequiredMixin, DetailView):
+class AdminEmployeeDetailView(LoginRequiredMixin, DetailView):
     model = EmployeeData
     template_name = 'emp_app/admin/employee_detail.html'
+    context_object_name = 'employee'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employee'] = self.get_object()
+        return context
+
+class HREmployeeDetailView(LoginRequiredMixin, DetailView):
+    model = EmployeeData
+    template_name = 'emp_app/hr/hr_employee_detail.html'
     context_object_name = 'employee'
 
     def get_context_data(self, **kwargs):
@@ -236,16 +246,4 @@ class HREmployeeTableView(ListView):
         context = super().get_context_data(**kwargs)
         context['search_query'] = self.request.GET.get('search', '')
         context['status_filter'] = self.request.GET.get('status', '')
-        return context
-    
-#hr employee detail view
-
-class EmployeeDetailView(LoginRequiredMixin, DetailView):
-    model = EmployeeData
-    template_name = 'emp_app/hr/hr_employee_detail.html'
-    context_object_name = 'employee'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['employee'] = self.get_object()
         return context

@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.views import LogoutView
-from .views import AddEmployeeView,EditEmployeeView,DeleteEmployeeView,EmployeeDetailView,HRDashboardView,HREmployeeTableView
+from .views import AddEmployeeView,EditEmployeeView,DeleteEmployeeView,AdminEmployeeDetailView,HRDashboardView,HREmployeeTableView,HREmployeeDetailView
 
 
 urlpatterns = [
@@ -16,10 +16,10 @@ urlpatterns = [
     path('employees/edit/<int:pk>/', EditEmployeeView.as_view(), name='edit_employee'),
     path('employees/delete/<int:pk>/', DeleteEmployeeView.as_view(), name='delete_employee'),
     path('employees/', views.EmployeeTableView.as_view(), name='view_table'),
-    path('employees/<int:pk>/', EmployeeDetailView.as_view(), name='employee_detail'),
+    path('employees/<int:pk>/',AdminEmployeeDetailView.as_view(), name='admin_employee_detail'),
 
     #hr
     path('hr/hr_dashboard/', HRDashboardView.as_view(), name='hr_dashboard'),
     path('hr/employees/', HREmployeeTableView.as_view(), name='hr_view_table'),
-    path('hr/employees/<int:pk>/', EmployeeDetailView.as_view(), name='hr_employee_detail'),
+    path('hr/employees/<int:pk>/', HREmployeeDetailView.as_view(), name='hr_employee_detail'),
 ]
