@@ -1,62 +1,73 @@
 <!-- emp_app/templates/emp_app/admin/dashboard.html -->
 {% extends 'emp_app/base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-2">Welcome to Admin Dashboard</h1>
     <p class="text-gray-600 mb-6">Here's what's happening with your employees today.</p>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Stats Cards Inline -->
+    <div class="flex flex-wrap gap-4 mb-8">
         <!-- Total Employees -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm font-medium">Total Employees</h3>
-                    <p class="text-2xl font-bold">{{ total_employees }}</p>
-                </div>
+        <div class="flex-1 min-w-[200px] bg-blue-300 p-6 rounded-lg shadow flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm font-medium">Total Employees</h3>
+                <p class="text-2xl font-bold">{{ total_employees }}</p>
             </div>
         </div>
-
         <!-- Active Employees -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-green-100 text-green-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm font-medium">Active Employees</h3>
-                    <p class="text-2xl font-bold">{{ active_employees }}</p>
-                    <p class="text-xs text-gray-500">Currently Active</p>
-                </div>
+        <div class="flex-1 min-w-[200px] bg-green-300 p-6 rounded-lg shadow flex items-center">
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm font-medium">Active Employees</h3>
+                <p class="text-2xl font-bold">{{ active_employees }}</p>
+                <p class="text-xs text-gray-500">Currently Active</p>
             </div>
         </div>
-
         <!-- Recent Updates -->
-        <div class="bg-white p-6 rounded-lg shadow">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-gray-500 text-sm font-medium">Recent Updates</h3>
-                    <p class="text-2xl font-bold">{{ recent_updates }}</p>
-                    <p class="text-xs text-gray-500">Last 30 Days</p>
-                </div>
+        <div class="flex-1 min-w-[200px] bg-purple-300 p-6 rounded-lg shadow flex items-center">
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-gray-500 text-sm font-medium">Recent Updates</h3>
+                <p class="text-2xl font-bold">{{ recent_updates }}</p>
+                <p class="text-xs text-gray-500">Last 30 Days</p>
             </div>
         </div>
     </div>
 
-    <!-- Recently Modified Employees -->
+    <!-- Charts Section (smaller) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Bar Chart -->
+        <div class="bg-white p-6 rounded-lg shadow flex flex-col items-center">
+            <h3 class="text-lg font-semibold mb-4">Employee Status Overview</h3>
+            <div style="width:220px; height:150px;">
+                <canvas id="statusBarChart" data-active="{{ active_employees }}" data-inactive="{{ inactive_employees }}"></canvas>
+            </div>
+        </div>
+        <!-- Pie Chart -->
+        <div class="bg-white p-6 rounded-lg shadow flex flex-col items-center">
+            <h3 class="text-lg font-semibold mb-4">Employee Position Distribution</h3>
+            <div style="width:220px; height:150px; position: relative;">
+                <canvas id="positionPieChart" data-labels="{{ position_labels|join:',' }}" data-counts="{{ position_counts|join:',' }}"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recently Modified Employees (unchanged) -->
     <div class="bg-white p-6 rounded-lg shadow mb-8">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Recently Modified Employees</h2>
@@ -120,4 +131,8 @@
         </div>
     </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'emp_app/js/stats.js' %}"></script>
 {% endblock %}

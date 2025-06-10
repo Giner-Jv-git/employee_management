@@ -65,12 +65,9 @@ class AdminDashboardView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Total employees count
         context['total_employees'] = EmployeeData.objects.count()
-        
-        # Active employees count
         context['active_employees'] = EmployeeData.objects.filter(status='active').count()
+        context['inactive_employees'] = EmployeeData.objects.filter(status='inactive').count()
         
         # Recent updates (last 30 days)
         thirty_days_ago = timezone.now() - timedelta(days=30)
@@ -81,6 +78,14 @@ class AdminDashboardView(LoginRequiredMixin,TemplateView):
         # Recently modified employees (last 5 changes)
         context['recent_employees'] = EmployeeData.objects.all().order_by('-updated_at')[:5]
         
+        # Pie chart data
+        position_labels = [label for _, label in EmployeeData.POSITION_CHOICES]
+        position_counts = [
+            EmployeeData.objects.filter(position=key).count()
+            for key, _ in EmployeeData.POSITION_CHOICES
+        ]
+        context['position_labels'] = position_labels
+        context['position_counts'] = position_counts
         return context
 
 
@@ -199,12 +204,9 @@ class HRDashboardView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Total employees count
         context['total_employees'] = EmployeeData.objects.count()
-        
-        # Active employees count
         context['active_employees'] = EmployeeData.objects.filter(status='active').count()
+        context['inactive_employees'] = EmployeeData.objects.filter(status='inactive').count()
         
         # Recent updates (last 30 days)
         thirty_days_ago = timezone.now() - timedelta(days=30)
@@ -215,6 +217,14 @@ class HRDashboardView(LoginRequiredMixin,TemplateView):
         # Recently modified employees (last 5 changes)
         context['recent_employees'] = EmployeeData.objects.all().order_by('-updated_at')[:5]
         
+        # Pie chart data
+        position_labels = [label for _, label in EmployeeData.POSITION_CHOICES]
+        position_counts = [
+            EmployeeData.objects.filter(position=key).count()
+            for key, _ in EmployeeData.POSITION_CHOICES
+        ]
+        context['position_labels'] = position_labels
+        context['position_counts'] = position_counts
         return context
 
      
