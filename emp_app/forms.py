@@ -20,3 +20,13 @@ class EmployeeForm(forms.ModelForm):
                 'class': 'hidden'
             })
         }
+
+class HRAddEmployeeRequestForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    employee_id = forms.CharField(max_length=20)
+    age = forms.IntegerField(min_value=18)
+    salary = forms.DecimalField(max_digits=10, decimal_places=2)
+    address = forms.CharField(widget=forms.Textarea)
+    phone_number = forms.CharField(max_length=11)
+    position = forms.ChoiceField(choices=EmployeeData.POSITION_CHOICES)
+    # Add other fields as needed

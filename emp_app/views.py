@@ -1,7 +1,7 @@
-from django.views.generic import ListView,TemplateView,CreateView,UpdateView,DeleteView,DetailView
+from django.views.generic import ListView,TemplateView,CreateView,UpdateView,DeleteView,DetailView,FormView, View
 from django.db.models import Q
-from .models import EmployeeData
-from django.shortcuts import render, redirect
+from .models import EmployeeData, HRRequest
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 from django.utils import timezone
@@ -9,11 +9,12 @@ from datetime import timedelta
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import EmployeeForm
+from .forms import EmployeeForm, HRAddEmployeeRequestForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
+from decimal import Decimal
 
 
 
@@ -257,3 +258,60 @@ class HREmployeeTableView(ListView):
         context['search_query'] = self.request.GET.get('search', '')
         context['status_filter'] = self.request.GET.get('status', '')
         return context
+
+# HR Add Employee Request
+
+class HRAddEmployeeRequestView(FormView):
+    template_name = 'emp_app/hr/hr_add_employee_request.html'
+    form_class = HRAddEmployeeRequestForm
+    success_url = reverse_lazy('hr_request_list')
+
+    def form_valid(self, form):
+        data = form.cleaned_data.copy()
+        # Convert all Decimal values to float for JSON serialization
+        for key, value in data.items():
+            if isinstance(value, Decimal):
+                data[key] = float(value)
+        HRRequest.objects.create(
+            request_type='add_employee',
+            employee_data=data,
+            request_by=self.request.user
+        )
+        return super().form_valid(form)
+
+class HRRequestListView(ListView):
+    model = HRRequest
+    template_name = 'emp_app/hr/hr_request_list.html'
+    context_object_name = 'requests'
+
+    def get_queryset(self):
+        return HRRequest.objects.filter(request_by=self.request.user).order_by('-created_at')
+
+class AdminHRRequestListView(ListView):
+    model = HRRequest
+    template_name = 'emp_app/admin/hr_request_admin_list.html'
+    context_object_name = 'requests'
+
+    def get_queryset(self):
+        return HRRequest.objects.filter(status='pending').order_by('-created_at')
+
+class AdminHRRequestProcessView(View):
+    def post(self, request, pk):
+        hr_request = get_object_or_404(HRRequest, pk=pk)
+        action = request.POST.get('action')
+        if action == 'approve':
+            hr_request.status = 'approved'
+            hr_request.processed_by = request.user
+            hr_request.updated_at = timezone.now()
+            # If it's an add_employee request, create the EmployeeData
+            if hr_request.request_type == 'add_employee' and hr_request.employee_data:
+                EmployeeData.objects.create(
+                    **hr_request.employee_data,
+                    created_by=hr_request.request_by
+                )
+        elif action == 'reject':
+            hr_request.status = 'rejected'
+            hr_request.processed_by = request.user
+            hr_request.updated_at = timezone.now()
+        hr_request.save()
+        return redirect('admin_hr_requests')

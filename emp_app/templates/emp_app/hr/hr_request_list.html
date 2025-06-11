@@ -1,0 +1,192 @@
+{% extends 'emp_app/hr_base.html' %}
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">My Employee Requests</h1>
+                    <p class="text-gray-600">Track and manage your employee addition and removal requests</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Stats Card -->
+                    <div class="bg-white rounded-xl px-6 py-4 shadow-sm border">
+                        <div class="text-2xl font-bold text-blue-600">{{ requests|length }}</div>
+                        <div class="text-sm text-gray-500">Total Requests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if requests %}
+
+
+            <!-- Requests Grid/List -->
+            <div class="space-y-4">
+                {% for req in requests %}
+                <div class="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all duration-200 overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-start justify-between">
+                            <!-- Request Info -->
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <!-- Request Type Icon -->
+                                    <div class="flex-shrink-0">
+                                        {% if req.request_type == 'add_employee' %}
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                            </div>
+                                        {% else %}
+                                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                                </svg>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">{{ req.get_request_type_display }}</h3>
+                                        <p class="text-sm text-gray-500">Request #{{ req.id }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Employee Details -->
+                                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                                    {% if req.request_type == 'add_employee' %}
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee_data.name }}</p>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee_data.position }}</p>
+                                            </div>
+                                            {% if req.employee_data.department %}
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee_data.department }}</p>
+                                            </div>
+                                            {% endif %}
+                                            {% if req.employee_data.email %}
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee_data.email }}</p>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    {% elif req.request_type == 'remove_employee' and req.employee %}
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Employee Name</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee.name }}</p>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee.position }}</p>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
+                                                <p class="text-sm text-gray-900">{{ req.employee.employee_id }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Timeline -->
+                                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Submitted on {{ req.created_at|date:"F d, Y" }} at {{ req.created_at|date:"g:i A" }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Status & Actions -->
+                            <div class="flex-shrink-0 text-right">
+                                <!-- Status Badge -->
+                                <div class="mb-4">
+                                    {% if req.status == 'pending' %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            {{ req.get_status_display }}
+                                        </span>
+                                    {% elif req.status == 'approved' %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            {{ req.get_status_display }}
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                            {{ req.get_status_display }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="space-y-2">
+                                    {% if req.status == 'pending' %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="bg-white rounded-xl shadow-sm border p-12 text-center">
+                <div class="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No requests yet</h3>
+                <p class="text-gray-500 mb-6">You haven't submitted any employee requests. Start by creating your first request.</p>
+            </div>
+        {% endif %}
+
+        <!-- Action Button -->
+        <div class="mt-8 flex justify-center">
+            <a href="{% url 'hr_add_employee_request' %}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transform transition-all duration-200 hover:scale-105 shadow-lg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Submit New Employee Request
+            </a>
+        </div>
+
+        <!-- Help Section -->
+        <div class="mt-8 bg-blue-50 rounded-xl p-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-blue-800">Request Status Guide</h3>
+                    <div class="mt-2 text-sm text-blue-700 space-y-1">
+                        <p><strong>Pending:</strong> Your request is being reviewed by the HR team</p>
+                        <p><strong>Approved:</strong> Your request has been approved and is being processed</p>
+                        <p><strong>Rejected:</strong> Your request was not approved - contact HR for details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
