@@ -4,7 +4,7 @@ from django.contrib.auth.views import LogoutView
 from .views import (
     AddEmployeeView, EditEmployeeView, DeleteEmployeeView, AdminEmployeeDetailView, HRDashboardView, HREmployeeTableView, HREmployeeDetailView,
     HRAddEmployeeRequestView, HRRequestListView,
-    AdminHRRequestListView, AdminHRRequestProcessView
+    AdminHRRequestListView, AdminHRRequestProcessView, HRRequestDeleteView
 )
 
 
@@ -32,4 +32,5 @@ urlpatterns = [
     path('hr/requests/', HRRequestListView.as_view(), name='hr_request_list'),
     path('requests/', AdminHRRequestListView.as_view(), name='admin_hr_requests'),
     path('requests/<int:pk>/process/', AdminHRRequestProcessView.as_view(), name='admin_hr_request_process'),
+    path('hr/requests/<int:pk>/delete/', HRRequestDeleteView.as_view(), name='hr_request_delete'),
 ]

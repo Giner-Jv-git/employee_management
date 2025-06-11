@@ -18,6 +18,9 @@ from decimal import Decimal
 
 
 
+
+
+
 #auth
 
 def login_view(request):
@@ -315,3 +318,14 @@ class AdminHRRequestProcessView(View):
             hr_request.updated_at = timezone.now()
         hr_request.save()
         return redirect('admin_hr_requests')
+
+
+
+class HRRequestDeleteView(DeleteView):
+    model = HRRequest
+    template_name = 'emp_app/hr/hr_request_confirm_delete.html'
+    success_url = reverse_lazy('hr_request_list')
+
+    def get_queryset(self):
+        # Only allow the user to delete their own requests
+        return HRRequest.objects.filter(request_by=self.request.user)
